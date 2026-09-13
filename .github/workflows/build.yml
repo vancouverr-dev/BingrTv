@@ -26,7 +26,7 @@ jobs:
 
       - name: Install Android SDK packages
         run: |
-          sdkmanager "platform-tools" "platforms;android-37" "build-tools;36.0.0"
+          sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0"
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
@@ -39,6 +39,7 @@ jobs:
           unzip -q BingrTV-AndroidTV-Project.zip -d build-src
           test -f build-src/BingrTV/settings.gradle.kts
           test -f build-src/BingrTV/app/build.gradle.kts
+          sed -i 's/compileSdk = 37/compileSdk = 36/g; s/targetSdk = 37/targetSdk = 36/g' build-src/BingrTV/app/build.gradle.kts
 
       - name: Build APK
         working-directory: build-src/BingrTV
