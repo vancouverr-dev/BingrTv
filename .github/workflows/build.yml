@@ -21,9 +21,11 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Install Android SDK
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK packages
         run: |
-          yes | sdkmanager --licenses || true
           sdkmanager "platform-tools" "platforms;android-37" "build-tools;36.0.0"
 
       - name: Set up Gradle
@@ -31,11 +33,12 @@ jobs:
         with:
           gradle-version: '9.6.0'
 
-      - name: Extract project
+      - name: Extract Android TV project
         run: |
           mkdir build-src
           unzip -q BingrTV-AndroidTV-Project.zip -d build-src
           test -f build-src/BingrTV/settings.gradle.kts
+          test -f build-src/BingrTV/app/build.gradle.kts
 
       - name: Build APK
         working-directory: build-src/BingrTV
@@ -46,3 +49,4 @@ jobs:
         with:
           name: BingrTV-debug-apk
           path: build-src/BingrTV/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
