@@ -39,7 +39,15 @@ jobs:
           unzip -q BingrTV-AndroidTV-Project.zip -d build-src
           test -f build-src/BingrTV/settings.gradle.kts
           test -f build-src/BingrTV/app/build.gradle.kts
-          sed -i 's/compileSdk = 37/compileSdk = 36/g; s/targetSdk = 37/targetSdk = 36/g' build-src/BingrTV/app/build.gradle.kts
+
+          sed -i '/id("org.jetbrains.kotlin.android")/d' build-src/BingrTV/app/build.gradle.kts
+
+          sed -i 's/compileSdk = 37/compileSdk = 36/g' build-src/BingrTV/app/build.gradle.kts
+          sed -i 's/targetSdk = 37/targetSdk = 36/g' build-src/BingrTV/app/build.gradle.kts
+
+      - name: Show final app build file
+        run: |
+          cat build-src/BingrTV/app/build.gradle.kts
 
       - name: Build APK
         working-directory: build-src/BingrTV
